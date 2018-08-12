@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<title>网站后台登录</title>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<meta content="" name="description" />
+	<meta content="" name="author" />
+	<link href="/resources/media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+	<link href="/resources/media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+	<link href="/resources/media/css/login-soft.css" rel="stylesheet" type="text/css"/>
+</head>
+<body class="login">
+	<div class="logo">
+		<img src="/resources/media/image/logo-big.png" alt="" />
+	</div>
+	<div class="content">
+		<form class="form-vertical login-form">
+			<h3 class="form-title">Login to your account</h3>
+			<div class="control-group">
+				<label class="control-label visible-ie8 visible-ie9">Username</label>
+				<div class="controls">
+					<div class="input-icon left">
+						<i class="icon-user"></i>
+						<input class="m-wrap placeholder-no-fix" type="text" placeholder="Username" name="username"/>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label visible-ie8 visible-ie9">Password</label>
+				<div class="controls">
+					<div class="input-icon left">
+						<i class="icon-lock"></i>
+						<input class="m-wrap placeholder-no-fix" type="password" placeholder="Password" name="password"/>
+					</div>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label visible-ie8 visible-ie9">Captcha</label>
+				<div class="controls">
+					<div class="input-icon left">
+						<i class="icon-lock"></i>
+						<input class="m-wrap placeholder-no-fix" type="text" placeholder="Captcha" name="captcha"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-actions">
+				<img src="/admin/login/captcha" class="captcha" onclick='this.src=this.src+"?c="+Math.random()' alt="点击图片刷新">
+				<span class="click">点击图片刷新</span>
+				<button type="button" class="btn blue pull-right">
+				Login <i class="m-icon-swapright m-icon-white"></i>
+				</button>
+			</div>
+		</form>
+	</div>
+	<div class="copyright">
+		2013 &copy; Metronic - Admin Dashboard Template.
+	</div>
+	<script src="/resources/media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+	<script src="/resources/media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+	<script src="/resources/media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+	<script src="/resources/media/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="/resources/js/jq_notice.js" type="text/javascript"></script>
+	<!--[if lt IE 9]>
+	<script src="/media/js/excanvas.min.js"></script>
+	<script src="/media/js/respond.min.js"></script>
+	<![endif]-->
+	<script type="text/javascript">
+		$(function(){
+			$(".btn").click(sub);
+			$("input[name='captcha']").keyup(function(e){
+				if (e.which == 13) {
+					sub();
+				}
+			})
+		})
+		window.onload=function(){
+			document.onkeydown=function(e){
+				var ev = document.all ? window.event : e;
+				if(ev.keyCode==13) {
+				 	sub();
+		     	}
+			}
+		}
+		var submiting=false;
+		function sub(){
+			if ( submiting ) {
+				return;
+			}
+			var username=$("input[name='username']").val().replace(/\s/g,'');
+			var preg=/^[\w|_]{4,10}$/;
+			if ( !preg.test(username) ) {
+				$.warn("请输入正确的登录名");
+				return;
+			}
+			var pwd=$("input[name='password']").val().replace(/\s/g,'');
+			if ( !preg.test(pwd) ) {
+				$.warn("请输入正确的密码");
+				return;
+			}
+			var captcha=$("input[name='captcha']").val().replace(/\s/g,'');
+			var preg_cap=/^[\w]{4}/;
+			if ( !preg_cap.test(captcha) ) {
+				$.warn('请填写验证码');
+				return;
+			}
+			var data=$(".login-form").serialize();
+			submiting=true;
+			$.ajax({
+				url:'/admin/login/sub',
+				data:data,
+				type:'post',
+				error:function(res){
+					submiting=false;
+					$.warn("服务器忙，请重试");
+				},
+				success:function(res){
+					if ( res.result == 'SUCCESS') {
+						$.suc(res.msg,function(){
+							window.location=res.url;
+						});
+					}else{
+						submiting=false;
+						$.warn(res.msg);
+					}
+				}
+			})
+		}
+	</script>
+</body>
+</html>
