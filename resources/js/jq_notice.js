@@ -1,6 +1,10 @@
 $(function() {
     __loadcss();
-    $.extend({ suc: __jq_notice_success, warn: __jq_notice_warning, err: __jq_notice_error })
+    $.extend({
+        suc: __jq_notice_success,
+        warn: __jq_notice_warning,
+        err: __jq_notice_error
+    })
 })
 var __notice_time = 3000;
 var __notice_timeout;
