@@ -62,6 +62,9 @@
     </div>
     <script type="text/javascript" src="/resources/js/jquery-3.0.0.min.js"></script>
     <script type="text/javascript" src="/resources/layer/layer.js"></script>
+    <script type="text/javascript" src="/resources/jQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/resources/jQuery-File-Upload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/resources/jQuery-File-Upload/js/jquery.iframe-transport.js"></script>
     <script type="text/javascript">
         class test {
             constructor() {

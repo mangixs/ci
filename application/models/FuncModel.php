@@ -50,4 +50,9 @@ class FuncModel extends MY_Model
     {
         $this->db->insert_batch('func_auth', $data);
     }
+    public function getExcelData(){
+        $this->door = $this->load->database('door',true);
+        $res = $this->door->from('device_event_log')->limit(20)->get()->result_array();
+        return $res;
+    }
 }
