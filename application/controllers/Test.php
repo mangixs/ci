@@ -41,6 +41,7 @@ class Test extends CI_Controller
                         $ret[$v['key']] = $v['value'];
                     }
                 }
+                //$res = $this->httpSign($url,$ret);
                 $res = $this->httpPost($url, $ret);
                 $tmp = json_decode($res, true);
                 if (!is_array($tmp)) {
@@ -53,6 +54,37 @@ class Test extends CI_Controller
 
                 break;
         }
+    }
+    private $key = 'wx57bb5ae2c0e7e997';
+    private function httpSign($url,$ret){
+        $timeStamp = date('Y-m-d H:i:s');
+        $ret['timeStamp'] = $timeStamp;
+        $ret['randStr'] = $this->randStr();
+        ksort($ret);
+        $sign = http_build_query($ret);
+        $sign = $sign.'&authkey='.$this->key;
+        $sign = strtoupper(md5($sign));
+        $ret['sign'] = $sign;
+        $ret['authkey'] = $this->key;
+        $ret['timeStamp'] = $timeStamp;
+        return $this->httpPost($url,$ret);
+    }
+    protected function randStr($len = 8) {
+        $str  = array('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm');
+        $last = count($str) - 1;
+        $rand = '';
+        for ($i = 0; $i < $len; $i++) {
+            $rand .= $str[rand(0, $last)];
+        }
+        return $rand;
+    }
+    private function sign($ret){
+        $timeStamp = date('Y-m-d H:i:s');
+        $ret['timeStamp'] = $timeStamp;
+        ksort($ret);
+        $sign = http_build_query($ret);
+        $sign = $sign.'&authkey='.$key;
+        $sign = strtoupper(md5($sign));
     }
     private function httpGet($url)
     {

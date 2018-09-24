@@ -27,7 +27,7 @@
             <div class="col-xs-9">
                 <div class="form-group">
                     <label>url</label>
-                    <input type="text" name="url" class="form-control" placeholder="url" value="http://">
+                    <input type="text" name="url" class="form-control" placeholder="url" value="http: //">
                 </div>
             </div>
         </div>
